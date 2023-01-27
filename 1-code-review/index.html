@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="main.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <title>Dog Images</title>
+  </head>
+
+  <body>
+    <main>
+      <div id="dogBreedDiv">
+        <label for="dogBreedSelect">Select Dog Breed:</label>
+        <input list="dogBreedsList" id="dogBreedInput" name="dogBreedInput" />
+        <datalist id="dogBreedsList"></datalist>
+      </div>
+
+      <div id="thumbnailContainerElement"></div>
+
+      <div id="imageModal">
+        <img id="imageModalDisplay" />
+      </div>
+      <div id="paginationElement"></div>
+    </main>
+  </body>
+</html>

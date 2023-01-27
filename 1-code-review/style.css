@@ -1,0 +1,81 @@
+html {
+  background-color: rgb(90, 130, 204);
+  font-family: 'Nunito', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+#thumbnailContainerElement {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-gap: 1%;
+  justify-content: space-evenly;
+  align-content: space-evenly;
+  overflow: auto;
+  padding: 2px;
+}
+
+#thumbnailContainerElement > div {
+  justify-self: center;
+  align-self: center;
+}
+
+#thumbnailContainerElement img {
+  grid-area: photo;
+  border-radius: 3px;
+  border: solid 3px white;
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 250px;
+}
+
+#imageModal {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background-color: #000000ee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  padding: 5%;
+  z-index: 1;
+}
+
+#imageModal img {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0px 0px 2px 2px rgb(198, 198, 198);
+}
+
+#paginationElement {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#paginationElement button {
+  font-size: 12px;
+  padding: 10px;
+  margin: 3px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+#paginationElement button.active {
+  font-weight: 700;
+  background-color: #888888;
+  color: white;
+}
+
+#dogBreedDiv {
+  position: relative;
+  text-align: center;
+  margin: 3vh 0;
+  font-size: 24px;
+}

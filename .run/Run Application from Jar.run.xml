@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Application from Jar" type="JarApplication">
+    <option name="JAR_PATH" value="$PROJECT_DIR$/2-code-challenge/build/libs/rest-service-0.0.1-SNAPSHOT.jar" />
+    <option name="WORKING_DIRECTORY" value="C:\Users\habib\Documents\Repositories\forbes-takehometest\2-code-challenge" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2" />
+  </configuration>
+</component>

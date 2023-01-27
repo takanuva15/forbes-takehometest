@@ -1,0 +1,27 @@
+{
+  "name": "Image-Gallery-Review",
+  "version": "1.0.0",
+  "description": "Forbes code review",
+  "main": "main.js",
+  "scripts": {
+    "start": "http-server -o / .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "UPDATE"
+  },
+  "keywords": [
+    "vanilla",
+    "JS"
+  ],
+  "author": "Forbes Engineering",
+  "license": "ISC",
+  "bugs": {
+    "url": "UPDATE"
+  },
+  "homepage": "#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}
