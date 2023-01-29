@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Application" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="com.example.restservice.RestServiceApplication" />
+    <option name="MAIN_CLASS_NAME" value="com.forbes.takehometest.CorrectorApplication" />
     <module name="forbes-takehometest" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/2-code-challenge" />
     <method v="2">
