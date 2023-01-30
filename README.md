@@ -36,20 +36,25 @@ gradlew build
 
 # Run the built jar file. It will start a web server on port 8080
 java -jar build\libs\code-challenge-0.0.1-SNAPSHOT.jar
+# To view debug logs, run the following command instead
+java -jar build\libs\code-challenge-0.0.1-SNAPSHOT.jar --logging.level.com.forbes=DEBUG
+
+#Note if the above causes issues, this command may work as well:
+gradlew bootRun
 ```
 
 Sample curl commands (must be run in a separate terminal from the jar file, but within the same directory as the 
 code-challenge. I ran these commands in standard cmd, but you may need to format these a little if using powershell):
 ```bash
 # add dictionary words 
-# Note: words with digits or punctuation besides ' or - will be ignored. I coded this logic on the idea that it 
+# Note: Words with digits or punctuation besides ' or - will be ignored. I coded this logic on the idea that it 
 # wouldn't make sense to autocorrect something like "200" to "20". This could be re-implemented easily by changing
 # the validation to allow digits.
 # In addition, for words that don't meet the digit/punctuation validation checks, currently I silently ignore them and 
 # proceed with the next word. I did this to match the ApiSpec given, where we should process all valid words and only
 # return response 200 if the entry is a duplicate. This could be better-handled in the future by returning a 400 
 # immediately if any of the words were invalid, and then returning response 200 only if all words are valid and some 
-# are duplicates. 
+# are duplicates. (Note I also ignore blank words - these could be modified to throw an error 400 as well)
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d @sample_dict_add.json
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d "{\"dictionary\": {\"add\": [\"cat\", \"bat\"]}}"
 
@@ -125,6 +130,17 @@ same time, so this would need to be evaluated as well through multi-threaded per
 > these. We can set up a caching layer in front of the DB (eg implemented as part of `TrieDao`), so that these queries get
 > an immediate response. (A potential implementation could be to use a distributed cache like Redis, either 
 > on-prem or via a cloud provider)
+> 
+> Aside from this, we should also consider how much memory is required to store a copy of the entire English dictionary. 
+> - Based on some online research, there's about 500,000 words in modern use today. 
+> - The > average word is about 6 characters long, so we can round up to 10. 
+> - That's approximately 5 million characters. 
+> - UTF-16 uses 2 bytes a character, so we get 10 million bytes, or 10 MB. (Just for storing the words themselves)
+> 
+> The Trie itself could be much larger than this since it would make multiple nodes for each character combination
+> among all the strings. It would be best to attempt to build the Trie with a sample of 1k, 10k, 100k, etc. words 
+> and see how much memory gets used each time to determine whether some compression optimization is required 
+> for storing the entire Trie (or if it's even in the realm of plausibility).
 
 
 Regardless of the solution picked, it would be definitely be beneficial to set up multiple read replicas for this 
@@ -135,7 +151,12 @@ In addition, with the extra configuration required for load-balancing, caching, 
 instances, using a container orchestration engine such as Kubernetes to deploy our application would provide an 
 optimal way to configure repeatable deployments defined within files that can be committed to version control. This 
 also allows us to use Kubernetes' native implementation for zero-downtime deployments such as rolling updates and canary
-releases.
+releases. 
+
+It's also likely that the demand for this service will increase/decrease based on the time of day in whatever region we 
+are running our servers in, so we would want to implement autoscaling to increase the number of running servers running
+during peak hours vs off-hours. Kubernetes has a native pod autoscaler we can leverage for increasing/decreasing the 
+number of running containers as needed.
 
 
 

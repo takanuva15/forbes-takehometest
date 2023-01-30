@@ -2,16 +2,17 @@ package com.forbes.takehometest.triedb;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
 /**
  * Implements the Trie structure used to look for word matches and "closest" matches
  */
-@Data
+@Slf4j
 public class Trie {
 	public static final char WILDCARD = '*';
-	private TrieNode root = new TrieNode();
+	private final TrieNode root = new TrieNode();
 
 	/**
 	 * Adds a word to the Trie
@@ -20,7 +21,9 @@ public class Trie {
 		if (word.isEmpty()) {
 			throw new IllegalArgumentException("Can not add empty word!");
 		}
+		log.debug("Adding '{}' to trie...", word);
 		addWordFromNodeAndIndex(word, root, 0);
+		log.debug("Added '{}' to trie successfully.", word);
 	}
 
 	/**
@@ -73,9 +76,12 @@ public class Trie {
 			throw new IllegalArgumentException("Can not add delete empty word!");
 		}
 		if (!contains(word)) {
+			log.debug("Did not find '{}' in trie. Skipping delete...", word);
 			return false;
 		}
+		log.debug("Deleting '{}' from trie...", word);
 		deleteWordFromNodeAndIndex(word, root, 0);
+		log.debug("Deleted '{}' from trie successfully.", word);
 		return true;
 	}
 
@@ -118,9 +124,9 @@ public class Trie {
 	 * records the current index of the word being considered, the node it is on, and the number of errors
 	 * accumulated so far during the search. Match states with fewer errors are considered first in the PQ.
 	 */
-	public List<String> closestMatches(String word) {
+	public Set<String> closestMatches(String word) {
 		var maxErrorsAllowed = (word.length() + 1) / 2;
-		List<String> bestMatches = new ArrayList<>();
+		Set<String> bestMatches = new HashSet<>();
 		var currMatches = new PriorityQueue<>(List.of(new MatchState(0, root, 0)));
 		while (!currMatches.isEmpty()) {
 			var currState = currMatches.poll();
@@ -170,6 +176,7 @@ public class Trie {
 				currMatches.add(new MatchState(index, node.getChild(WILDCARD), currState.numErrors + 1));
 			}
 		}
+		log.debug("Trie found {} matches for '{}'", bestMatches.size(), word);
 		return bestMatches;
 	}
 

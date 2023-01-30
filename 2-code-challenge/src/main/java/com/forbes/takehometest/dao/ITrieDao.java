@@ -1,6 +1,6 @@
 package com.forbes.takehometest.dao;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Defines the methods that a Trie DAO should support for reading/writing to a Trie.
@@ -13,6 +13,6 @@ public interface ITrieDao {
 
 	boolean hasWord(String word);
 
-	List<String> getClosestMatchesFor(String word);
+	Set<String> getClosestMatchesFor(String word);
 
 }

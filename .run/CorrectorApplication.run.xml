@@ -2,6 +2,7 @@
   <configuration default="false" name="CorrectorApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.forbes.takehometest.CorrectorApplication" />
     <module name="code-challenge.main" />
+    <option name="PROGRAM_PARAMETERS" value="--logging.level.com.forbes=DEBUG" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.forbes.takehometest.*" />

@@ -5,6 +5,7 @@ import com.forbes.takehometest.model.dictionary.DictionaryAddModel;
 import com.forbes.takehometest.model.dictionary.DictionaryListModel;
 import com.forbes.takehometest.model.dictionary.DictionaryRemoveModel;
 import com.forbes.takehometest.util.WordValidationUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 /**
  * Serves the REST API for reading and modifying the internal dictionary.
  */
+@Slf4j
 @RestController
 public class DictionaryController {
 	private final IDictionaryService dictionaryService;
@@ -24,6 +26,7 @@ public class DictionaryController {
 
 	@GetMapping("/dictionary")
 	public DictionaryListModel getAllWords() {
+		log.info("Received request to get words");
 		var words = dictionaryService.getWords();
 		return new DictionaryListModel(words);
 	}
@@ -39,16 +42,19 @@ public class DictionaryController {
 	@PostMapping("/dictionary")
 	public ResponseEntity<Object> addWord(@RequestBody DictionaryAddModel addModel) {
 		if (addModel.getDictionary() == null || addModel.getWordsToAdd() == null) {
+			log.error("Invalid request received: {}", addModel);
 			return ResponseEntity.badRequest().build();
 		}
 		var duplicateWords = new ArrayList<String>();
 		for (var word : addModel.getWordsToAdd()) {
 			word = WordValidationUtils.sanitizeWord(word).toLowerCase();
-			// ignore word if it has digits
-			if (!WordValidationUtils.isValidDictionaryWord(word)) {
+			// ignore word if it's empty or has digits
+			if (word.isEmpty() || !WordValidationUtils.isValidDictionaryWord(word)) {
+				log.warn("Invalid word found: '{}'. Will not add to dictionary...", word);
 				continue;
 			}
 			if (!dictionaryService.addWord(word)) {
+				log.debug("Word already exists: '{}'. Skipping...", word);
 				duplicateWords.add(word);
 			}
 		}
@@ -70,9 +76,11 @@ public class DictionaryController {
 		var notFoundWords = new ArrayList<String>();
 		for (var word : removeModel.getWordsToRemove()) {
 			if (!WordValidationUtils.isValidDictionaryWord(word)) {
+				log.warn("Invalid word provided: '{}'. Will not delete from dictionary...", word);
 				continue;
 			}
 			if (!dictionaryService.removeWord(word)) {
+				log.debug("Word not found in dictionary: '{}'. Skipping...", word);
 				notFoundWords.add(word);
 			}
 		}

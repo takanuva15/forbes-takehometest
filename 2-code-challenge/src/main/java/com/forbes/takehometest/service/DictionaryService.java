@@ -3,6 +3,7 @@ package com.forbes.takehometest.service;
 import com.forbes.takehometest.dao.ITrieDao;
 import com.forbes.takehometest.dao.IWordStorageDao;
 import com.forbes.takehometest.interfaces.IDictionaryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 /**
  * Serves as an intermediary for handling reads/writes to the dictionary.
  */
+@Slf4j
 @Service
 public class DictionaryService implements IDictionaryService {
 	private final ITrieDao trieDao;
@@ -54,6 +56,7 @@ public class DictionaryService implements IDictionaryService {
 	@Override
 	public Optional<String> getClosestWord(String word) {
 		var possibleWords = trieDao.getClosestMatchesFor(word);
+		log.debug("{} matches found for '{}'. Sample matches: {}", possibleWords.size(), word, possibleWords.stream().limit(10).toList());
 		return possibleWords.stream().sorted().findFirst();
 	}
 }

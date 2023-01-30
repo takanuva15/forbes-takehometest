@@ -2,7 +2,7 @@ package com.forbes.takehometest.dao;
 
 import com.forbes.takehometest.triedb.Trie;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Implements methods for reading/writing to a Trie. Since we are not using an external DB, the Trie instance is
@@ -27,7 +27,7 @@ public class TrieDao implements ITrieDao {
 	}
 
 	@Override
-	public List<String> getClosestMatchesFor(String word) {
+	public Set<String> getClosestMatchesFor(String word) {
 		return trie.closestMatches(word);
 	}
 }
