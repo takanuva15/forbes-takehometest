@@ -5,6 +5,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * API model for getting words in a dictionary
+ */
 @Data
 public class DictionaryListModel {
 	private Dictionary dictionary = new Dictionary();

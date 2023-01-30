@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Serves the REST API for providing corrections for a given story.
+ */
 @RestController
 public class StoryController {
 	private final IStoryService storyService;

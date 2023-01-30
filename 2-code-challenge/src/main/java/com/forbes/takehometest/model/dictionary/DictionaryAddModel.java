@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * API model for adding words to a dictionary
+ */
 @Data
 public class DictionaryAddModel {
 	private Dictionary dictionary;

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Serves as an intermediary for handling reads/writes to the dictionary.
+ */
 @Service
 public class DictionaryService implements IDictionaryService {
 	private final ITrieDao trieDao;
@@ -44,6 +47,10 @@ public class DictionaryService implements IDictionaryService {
 		return trieDao.hasWord(word);
 	}
 
+	/**
+	 * Iterates over all close-matches found for a given word and returns the one that was added to the dictionary
+	 * first based on its sequence number in wordStorage.
+	 */
 	@Override
 	public Optional<String> getClosestWord(String word) {
 		var possibleWords = trieDao.getClosestMatchesFor(word);

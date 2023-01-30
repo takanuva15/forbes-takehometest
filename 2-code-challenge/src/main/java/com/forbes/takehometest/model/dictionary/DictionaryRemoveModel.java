@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * API model for removing words from a dictionary
+ */
 @Data
 public class DictionaryRemoveModel {
 	private Dictionary dictionary;
