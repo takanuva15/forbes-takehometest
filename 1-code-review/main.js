@@ -104,7 +104,7 @@
 
     for (const breed of breeds) {
       //@COMMENT See comment right below "FUNCTIONS" section for additional details. The DOM-manipulation logic here
-      // should be extracted to a DogBreedsView class, where it would be invoked like: `DogBreedsView.addBreeds(breeds)`
+      // should be extracted to a DogBreedsView class, where it would be invoked like: `DogBreedsView.addBreed(breed)`
       const optionElement = document.createElement('option');
       optionElement.setAttribute('value', breed);
       dogBreedsList.appendChild(optionElement);
@@ -216,7 +216,8 @@
     // function that describes what they're doing. Eg:
     // `setOnChangeCallbackFor(DogBreedsView.getDogBreedSelector(), updateImageGalleryForNewDogBreed);
     // I could foresee later that we might want to show a heading or special text elsewhere on the page for the breed
-    // the user selected aside from the input itself, which would add extra logic to this function
+    // the user selected aside from the input itself, which would add extra logic to this function and justify cleaning
+    // it up ahead-of-time.
     dogBreedInput.addEventListener('change', onDogBreedSelected);
     imageModal.addEventListener('click', hideModal);
   }
@@ -227,7 +228,7 @@
 // main.js. This makes the individual business logic of each function and code-component very difficult to unit-test,
 // which means the only testing we could do easily would be integration tests. To remedy this, we should extract the
 // functions into separate js files as described above, and write tests for each function as relevant and mock the other
-// function/API calls that are irrelevant.
+// function/API calls that are irrelevant to what's being tested.
 
 //@COMMENT As an aside, if we're planning to scale this site and add more functionality like authentication,
 // analytics, multiple routes, etc., it would be best to switch our code to use a professional web development

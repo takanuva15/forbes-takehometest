@@ -45,6 +45,11 @@ code-challenge. I ran these commands in standard cmd, but you may need to format
 # Note: words with digits or punctuation besides ' or - will be ignored. I coded this logic on the idea that it 
 # wouldn't make sense to autocorrect something like "200" to "20". This could be re-implemented easily by changing
 # the validation to allow digits.
+# In addition, for words that don't meet the digit/punctuation validation checks, currently I silently ignore them and 
+# proceed with the next word. I did this to match the ApiSpec given, where we should process all valid words and only
+# return response 200 if the entry is a duplicate. This could be better-handled in the future by returning a 400 
+# immediately if any of the words were invalid, and then returning response 200 only if all words are valid and some 
+# are duplicates. 
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d @sample_dict_add.json
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d "{\"dictionary\": {\"add\": [\"cat\", \"bat\"]}}"
 
@@ -74,8 +79,11 @@ curl -i http://localhost:8080/story -H "Content-Type: application/json" -d "{\"s
 
 ### How to deploy this application
 
-To deploy this application, I would first package it and get it running on a Docker container. Afterwards, I would 
-deploy it on an existing server that has the docker engine installed, or on a cloud provider that supports Docker.
+To deploy this application, I would first package it and get it running on a Docker container to avoid concerns about
+different server configuration, where Java is installed, directory permissions, etc. 
+
+Afterwards, I would deploy it on an existing server that has the docker engine installed, or on a cloud provider (eg
+AWS, GCP, etc.) that supports Docker.
 This would be sufficient to get a single instance running for testing or on a DEV environment for others to connect 
 their own applications to.
 
