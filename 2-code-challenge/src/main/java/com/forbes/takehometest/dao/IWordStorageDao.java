@@ -11,6 +11,4 @@ public interface IWordStorageDao {
 	void removeWord(String word);
 
 	List<String> getWords();
-
-	long getWordIndex(String word);
 }

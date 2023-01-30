@@ -48,21 +48,12 @@ public class DictionaryService implements IDictionaryService {
 	}
 
 	/**
-	 * Iterates over all close-matches found for a given word and returns the one that was added to the dictionary
-	 * first based on its sequence number in wordStorage.
+	 * Iterates over all close-matches found for a given word and returns the one that would appear first in the
+	 * dictionary first based on its sorted order.
 	 */
 	@Override
 	public Optional<String> getClosestWord(String word) {
 		var possibleWords = trieDao.getClosestMatchesFor(word);
-		String wordToPick = null;
-		long earliestEntry = Long.MAX_VALUE;
-		for (var possibleWord : possibleWords) {
-			var wordIndex = wordStorageDao.getWordIndex(possibleWord);
-			if (wordIndex < earliestEntry) {
-				wordToPick = possibleWord;
-				earliestEntry = wordIndex;
-			}
-		}
-		return Optional.ofNullable(wordToPick);
+		return possibleWords.stream().sorted().findFirst();
 	}
 }

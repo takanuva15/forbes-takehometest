@@ -53,6 +53,10 @@ curl -i -X "DELETE" http://localhost:8080/dictionary -H "Content-Type: applicati
 curl -i -X "DELETE" http://localhost:8080/dictionary -H "Content-Type: application/json" -d "{\"dictionary\": {\"remove\": [\"believes\"]}}"
 
 # get dictionary words
+# Note: At first, I was storing the dictionary by order of insertion, but it looks like the API Spec was intending me
+# to return words in sorted order so that's what I'm doing. If we wanted to return words in insertion-order, we could 
+# easily modify `WordStorageDao` to use a LinkedHashMap with a sequence number to store words in insertion order 
+# and return the closest match based on when it was inserted.
 curl -i http://localhost:8080/dictionary
 
 # get closest matches for story
@@ -81,7 +85,7 @@ we can't simply run multiple instances with a load-balancer on top of them witho
 web server's dictionary could have words not present in another's.
 
 One option is to stop storing the dictionary and Trie structure locally on the web server. Instead, we can leverage a 
-SQL db table for storing the overall word list and use a NoSQL db (eg a Graph database) for storing the Trie structure.
+ db table for storing the overall word list and use a NoSQL db (eg a Graph database) for storing the Trie structure.
 Then, when we want to query the Trie for an autocorrect match, our web server would simply trigger a query to run in our
 DB. This would probably be the optimal solution for resiliency and minimal custom configuration on the server. 
 
@@ -115,8 +119,9 @@ same time, so this would need to be evaluated as well through multi-threaded per
 > on-prem or via a cloud provider)
 
 
-Regardless of the solution picked, it would be definitely be beneficial to set up read replicas for this solution since
-reads will be done a lot more than writes (new words would not be added to the dictionary often). 
+Regardless of the solution picked, it would be definitely be beneficial to set up multiple read replicas for this 
+solution (either through the microservice's role or a native DB implementation) since reads will be done a lot more 
+than writes (new words would not be added to the dictionary often). 
 
 In addition, with the extra configuration required for load-balancing, caching, and running multiple container 
 instances, using a container orchestration engine such as Kubernetes to deploy our application would provide an 
