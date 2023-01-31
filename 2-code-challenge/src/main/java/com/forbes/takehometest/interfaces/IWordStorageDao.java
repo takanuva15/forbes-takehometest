@@ -1,4 +1,4 @@
-package com.forbes.takehometest.dao;
+package com.forbes.takehometest.interfaces;
 
 import java.util.List;
 

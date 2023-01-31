@@ -1,9 +1,9 @@
 package com.forbes.takehometest.configuration;
 
-import com.forbes.takehometest.dao.ITrieDao;
-import com.forbes.takehometest.dao.IWordStorageDao;
 import com.forbes.takehometest.dao.TrieDao;
 import com.forbes.takehometest.dao.WordStorageDao;
+import com.forbes.takehometest.interfaces.ITrieDao;
+import com.forbes.takehometest.interfaces.IWordStorageDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

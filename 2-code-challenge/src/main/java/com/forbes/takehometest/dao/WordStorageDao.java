@@ -1,5 +1,7 @@
 package com.forbes.takehometest.dao;
 
+import com.forbes.takehometest.interfaces.IWordStorageDao;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

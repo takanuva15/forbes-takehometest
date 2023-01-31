@@ -1,5 +1,6 @@
 package com.forbes.takehometest.dao;
 
+import com.forbes.takehometest.interfaces.ITrieDao;
 import com.forbes.takehometest.triedb.Trie;
 
 import java.util.Set;

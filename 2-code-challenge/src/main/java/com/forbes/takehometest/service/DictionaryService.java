@@ -1,8 +1,8 @@
 package com.forbes.takehometest.service;
 
-import com.forbes.takehometest.dao.ITrieDao;
-import com.forbes.takehometest.dao.IWordStorageDao;
 import com.forbes.takehometest.interfaces.IDictionaryService;
+import com.forbes.takehometest.interfaces.ITrieDao;
+import com.forbes.takehometest.interfaces.IWordStorageDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
