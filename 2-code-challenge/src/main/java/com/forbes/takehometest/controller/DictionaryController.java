@@ -48,6 +48,11 @@ public class DictionaryController {
 		var duplicateWords = new ArrayList<String>();
 		for (var word : addModel.getWordsToAdd()) {
 			word = WordValidationUtils.sanitizeWord(word).toLowerCase();
+			// ignore word if it's too long
+			if (!WordValidationUtils.canWordBeIndexed(word)) {
+				log.warn("Word is too long: '{}'. Will not index into dictionary...", word);
+				continue;
+			}
 			// ignore word if it's empty or has digits
 			if (word.isEmpty() || !WordValidationUtils.isValidDictionaryWord(word)) {
 				log.warn("Invalid word found: '{}'. Will not add to dictionary...", word);

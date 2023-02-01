@@ -22,4 +22,12 @@ public class WordValidationUtils {
 	public static String sanitizeWord(String word) {
 		return word.trim().replaceAll(WORD_START_SANITIZER, "").replaceAll(WORD_END_SANITIZER, "");
 	}
+
+	/**
+	 * Due to the limits of the Trie structure, if a word is too long, it would take too much time to index
+	 * into the Trie. Thus, this method quickly checks if the word is short enough to be indexed.
+	 */
+	public static boolean canWordBeIndexed(String word) {
+		return word.length() <= 22;
+	}
 }

@@ -40,6 +40,11 @@ public class StoryService implements IStoryService {
 				log.warn("Empty word provided for correction: '{}'. Skipping...", word);
 				continue;
 			}
+			// ignore word if it's too long
+			if (!WordValidationUtils.canWordBeIndexed(word)) {
+				log.warn("Word is too long: '{}'. Will not attempt to correct...", word);
+				continue;
+			}
 			if (!WordValidationUtils.isValidDictionaryWord(word)) {
 				log.warn("Invalid word provided for correction: '{}'. Will not attempt to correct...", word);
 				corrections.add(new WordCorrection(word, ""));

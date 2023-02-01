@@ -47,14 +47,24 @@ Sample curl commands (must be run in a separate terminal from the jar file, but 
 code-challenge. I ran these commands in standard cmd, but you may need to format these a little if using powershell):
 ```bash
 # add dictionary words 
-# Note: Words with digits or punctuation besides ' or - will be ignored. I coded this logic on the idea that it 
+
+# Note1: Words with digits or punctuation besides ' or - will be ignored. I coded this logic on the idea that it 
 # wouldn't make sense to autocorrect something like "200" to "20". This could be re-implemented easily by changing
 # the validation to allow digits.
-# In addition, for words that don't meet the digit/punctuation validation checks, currently I silently ignore them and 
+
+# Note2: For words that don't meet the digit/punctuation validation checks, currently I silently ignore them and 
 # proceed with the next word. I did this to match the ApiSpec given, where we should process all valid words and only
 # return response 200 if the entry is a duplicate. This could be better-handled in the future by returning a 400 
 # immediately if any of the words were invalid, and then returning response 200 only if all words are valid and some 
 # are duplicates. (Note I also ignore blank words - these could be modified to throw an error 400 as well)
+
+# Note3: I've realized a bit late that the current Trie structure being used has lower performance for handling
+# really long words. To prevent the web server from freezing up on really long words, I've limited the max word
+# length that will be added to the dictionary to 22 characters. (Again here, I'm ignoring them and proceeding on adding
+# just the valid other words from the input, so the server returns 202. This could be modified to return a 400 until
+# the input words are proper). 
+# Since there are a lot less really-long words in English, I think we could store them in a separate, simplified
+# Trie and be more brute-force in our approach for correcting really-long words that appear in a given story. 
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d @sample_dict_add.json
 curl -i http://localhost:8080/dictionary -H "Content-Type: application/json" -d "{\"dictionary\": {\"add\": [\"cat\", \"bat\"]}}"
 
@@ -70,6 +80,13 @@ curl -i -X "DELETE" http://localhost:8080/dictionary -H "Content-Type: applicati
 curl -i http://localhost:8080/dictionary
 
 # get closest matches for story
+
+# Note1: Like with the dictionary add, any story words with random punctuation are ignored. If we don't find a 
+# correction within a defined error threshold (see `Trie.java` for details), we provide an empty correction.
+
+# Note2: Like with the dictionary add, really-long words are ignored and not corrected since our dictionary isn't
+# currently capable of efficiently storing long words. Like I mentioned previously though, we could make an
+# optimized Trie for really long words and search that instead for really-long words.
 curl -i http://localhost:8080/story -H "Content-Type: application/json" -d @sample_story.json
 curl -i http://localhost:8080/story -H "Content-Type: application/json" -d "{\"story\": \"mat\"}"
 
